@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Holdings">
+<meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="robots" content="noindex">
+<title>Holdings 2027</title>
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link rel="icon" type="image/png" href="data:image/png;base64,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">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:opsz,wght@8..144,400;8..144,500;8..144,600;8..144,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F2F2F7;--card:#FFFFFF;--fill:rgba(118,118,128,.12);--fill2:rgba(118,118,128,.08);
+  --label:#000;--label2:rgba(60,60,67,.6);--label3:rgba(60,60,67,.3);
+  --sep:rgba(60,60,67,.29);--blue:#007AFF;--green:#34C759;--red:#FF3B30;--orange:#FF9500;--teal:#30B0C7;--indigo:#5856D6;
+  --seg:#FFFFFF;--bar:rgba(249,249,249,.94);--shadow:0 3px 8px rgba(0,0,0,.12),0 3px 1px rgba(0,0,0,.04);
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#000;--card:#1C1C1E;--fill:rgba(118,118,128,.24);--fill2:rgba(118,118,128,.18);
+  --label:#FFF;--label2:rgba(235,235,245,.6);--label3:rgba(235,235,245,.3);
+  --sep:rgba(84,84,88,.65);--blue:#0A84FF;--green:#30D158;--red:#FF453A;--orange:#FF9F0A;--teal:#40C8E0;--indigo:#5E5CE6;
+  --seg:#636366;--bar:rgba(22,22,24,.94);--shadow:none;
+}}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+body{background:var(--bg);color:var(--label);font-family:"Roboto Serif",Georgia,serif;font-optical-sizing:auto;font-size:17px;line-height:1.32;letter-spacing:0;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+#scroller{position:fixed;top:0;left:0;right:0;bottom:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;padding:env(safe-area-inset-top) 0 calc(84px + env(safe-area-inset-bottom))}
+.wrap{will-change:transform}
+#ptr{position:fixed;left:0;right:0;top:calc(env(safe-area-inset-top) + 6px);display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--label2);font-size:12px;opacity:0;pointer-events:none;z-index:5}
+#ptr .spin{width:22px;height:22px;border:2.5px solid var(--fill);border-top-color:var(--blue);border-radius:50%;transition:transform .1s linear}
+#ptr.busy .spin{animation:ptrspin .7s linear infinite;transition:none}
+@keyframes ptrspin{to{transform:rotate(360deg)}}
+nav{z-index:10}
+.wrap{max-width:500px;margin:0 auto;padding:0 16px 24px}
+.top{display:flex;justify-content:flex-end;gap:6px;padding-top:22px;height:66px;align-items:center}
+.icb{background:none;border:none;color:var(--blue);width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:18px}
+.icb:active{opacity:.4}
+.icb svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+h1{font-family:inherit;font-size:34px;font-weight:700;letter-spacing:-.3px;line-height:41px}
+.sub{color:var(--label2);font-size:13px;margin:2px 0 18px}
+.group{background:var(--card);border-radius:12px;overflow:hidden;margin-bottom:22px}
+.pad{padding:14px 16px}
+.hdr{font-size:13px;color:var(--label2);text-transform:uppercase;margin:0 16px 7px}
+.foot-note{font-size:13px;color:var(--label2);margin:-15px 16px 22px}
+.cell{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;padding:11px 16px;position:relative}
+.cell+.cell::before,.cell+.det::before,.det+.cell::before{content:"";position:absolute;top:0;left:16px;right:0;height:.5px;background:var(--sep)}
+.cell .l{min-width:0;flex:1}
+.cell .r{text-align:right;white-space:nowrap}
+.t1{font-size:17px}
+.t2{font-size:15px;color:var(--label2)}
+.t3{font-size:13px;color:var(--label2)}
+.sb{font-weight:600}
+.trunc{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.up{color:var(--green)}.dn{color:var(--red)}
+.cap{font-size:13px;color:var(--label2);}
+.hero{font-family:inherit;font-size:40px;font-weight:700;letter-spacing:.2px;line-height:1.15;margin:2px 0 2px}
+.chg{font-size:17px;font-weight:600}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px}
+.tile{background:var(--card);border-radius:12px;padding:12px 14px}
+.tile b{display:block;font-size:20px;font-weight:600;letter-spacing:.38px;margin-top:3px}
+.callout{background:var(--card);border-radius:12px;padding:12px 16px;font-size:15px;color:var(--label2);margin:-12px 0 22px}
+.callout b{color:var(--label);font-weight:600}
+.track{height:4px;background:var(--fill);border-radius:2px;margin-top:8px;overflow:hidden}
+.track>i{display:block;height:100%;background:var(--blue);border-radius:2px}
+.split{display:flex;height:8px;border-radius:4px;overflow:hidden;gap:2px}
+.split i{display:block;height:100%}
+.abar{height:8px;background:var(--fill);border-radius:4px;margin-top:7px;overflow:hidden}
+.abar>i{display:block;height:100%;border-radius:4px;min-width:5px}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:8px;vertical-align:0}
+.seg{display:flex;background:var(--fill);border-radius:9px;padding:2px;margin-bottom:14px}
+.seg button{flex:1;border:none;background:none;font-family:inherit;font-size:13px;font-weight:500;color:var(--label);padding:6px 0;border-radius:7px}
+.seg button.on{background:var(--seg);box-shadow:var(--shadow);font-weight:600}
+.chev{width:8px;height:13px;margin-left:8px;stroke:var(--label3);fill:none;stroke-width:2;vertical-align:middle;transition:transform .2s}
+.open-row .chev{transform:rotate(90deg)}
+.det{display:none;background:var(--fill2);padding:4px 16px 8px;position:relative}
+.det.open{display:block}
+.kv{display:flex;justify-content:space-between;font-size:15px;padding:6px 0}
+.kv span:first-child{color:var(--label2)}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.pill{background:var(--fill);border-radius:7px;padding:4px 8px;font-size:13px;}
+.months{display:grid;grid-template-columns:repeat(12,1fr);gap:5px;align-items:end;height:120px}
+.months .col{display:flex;flex-direction:column;justify-content:flex-end;height:100%;gap:1px}
+.months .col i{display:block;border-radius:3px;min-height:3px;background:var(--fill)}
+.mlab{display:grid;grid-template-columns:repeat(12,1fr);gap:5px;margin-top:6px;font-size:11px;color:var(--label3);text-align:center}
+.legend{display:flex;gap:16px;font-size:13px;color:var(--label2);margin-top:12px}
+.setup label{display:block;font-size:13px;color:var(--label2);text-transform:uppercase;margin:16px 16px 7px}
+.setup input{width:100%;background:var(--card);border:none;border-radius:12px;padding:13px 16px;color:var(--label);font-size:17px;font-family:inherit;outline:none}
+.btn{display:block;width:100%;background:var(--blue);color:#fff;border:none;border-radius:12px;padding:15px;font-size:17px;font-weight:600;margin-top:22px;font-family:inherit}
+.btn:active{opacity:.7}
+.btn.plain{background:none;color:var(--blue);font-weight:400;margin-top:6px}
+.err{color:var(--red);font-size:15px;margin:10px 16px 0;min-height:1em}
+.empty{text-align:center;color:var(--label2);padding:60px 0}
+.mask{letter-spacing:1px;color:var(--label3)}
+.desc{font-size:13px;line-height:1.4;color:var(--label2);margin-top:8px}
+.cell-desc{margin:0;padding:12px 16px 10px;position:relative}
+.cell-desc+.cell::before,.cell-desc+.pad+.cell::before{content:"";position:absolute;top:0;left:16px;right:0;height:.5px;background:var(--sep)}
+.tdesc{font-size:12px;color:var(--label2);margin-top:3px;line-height:1.3}
+.acc-big{font-size:28px;font-weight:700;margin-top:6px}
+.cur{font-size:max(.55em,10px);letter-spacing:.2px;margin-right:.5px}
+.ct{font-size:max(.6em,11px)}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--bar);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-top:.5px solid var(--sep);display:flex;padding:7px 0 calc(2px + env(safe-area-inset-bottom))}
+nav button{flex:1;background:none;border:none;color:#999;font-family:inherit;font-size:10px;font-weight:500;letter-spacing:.1px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:0 0 4px}
+nav button svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+nav button.on{color:var(--blue)}
+nav button.on svg{stroke-width:2}
+.view{display:none}.view.on{display:block}
+.foot{text-align:center;color:var(--label3);font-size:11px;margin-top:8px}
+</style>
+</head>
+<body>
+<div id="ptr"><div class="spin"></div><span id="ptr-t">Pull to refresh</span></div>
+<div id="scroller">
+<div class="wrap">
+  <div class="top">
+    <button class="icb" id="hide" aria-label="Hide amounts"><svg id="eye" viewBox="0 0 24 24"></svg></button>
+    <button class="icb" id="gear" aria-label="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+  </div>
+  <h1 id="title">2027 Portfolio</h1>
+  <div class="sub" id="asof"></div>
+
+  <section class="view setup" id="v-setup">
+    <div class="t2" style="margin:0 0 4px">Paste the Apps Script link and your access key. They stay on this phone only.</div>
+    <label for="in-url">Apps Script link</label>
+    <input id="in-url" type="url" placeholder="https://script.google.com/macros/s/.../exec" autocomplete="off" autocapitalize="off" spellcheck="false">
+    <label for="in-key">Access key</label>
+    <input id="in-key" type="password" autocomplete="off" autocapitalize="off" spellcheck="false">
+    <button class="btn" id="save">Connect</button>
+    <button class="btn plain" id="cancel" style="display:none">Cancel</button>
+    <div class="err" id="setup-err"></div>
+  </section>
+  <section class="view on" id="v-sum"><div class="empty">Loading…</div></section>
+  <section class="view" id="v-stk"></section>
+  <section class="view" id="v-acc"></section>
+  <section class="view" id="v-sec"></section>
+  <section class="view" id="v-inc"></section>
+
+  <div class="foot">Holdings 2027 · v3.9.2</div>
+</div>
+</div>
+
+<nav id="nav">
+  <button class="on" data-v="sum"><svg viewBox="0 0 24 24"><path d="M3.5 11 12 4l8.5 7"/><path d="M5.5 9.5V20h5v-5.5h3V20h5V9.5"/></svg>Home</button>
+  <button data-v="stk"><svg viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r=".6"/><circle cx="4" cy="12" r=".6"/><circle cx="4" cy="18" r=".6"/></svg>Holdings</button>
+  <button data-v="acc"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="15" rx="3"/><path d="M3 10h18"/><path d="M15.5 15h2.5"/></svg>Accounts</button>
+  <button data-v="sec"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9h-9z"/><path d="M15 2.6A9 9 0 0 1 21.4 9H15z"/></svg>Sectors</button>
+  <button data-v="inc"><svg viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9.5v5M18 9.5v5"/></svg>Income</button>
+</nav>
+
+<script>
+/* No portfolio numbers live in this file. They are fetched from your private Apps Script with your key. */
+const CA = new Set(["AEM","ATRL","CNQ","CNR","ENB","FBTC","RY","TRI","WPM","TD","BMO","BNS","CM","SU","CP","SHOP","BN","MFC","T","BCE","ATD","L","WCN","CSU","TOU","FNV","PHYS","CCO","NA","POW","SLF","IFC","FTS","EMA","H","AQN","GIB.A","DOL","MRU","CTC.A","QSR","NTR","TRP","PPL","IMO","CVE","XEQT","VFV","XIU","ZSP"]);
+const NICE = {AMZN:"Amazon.com",AEM:"Agnico Eagle Mines",ATRL:"AtkinsRéalis",CNQ:"Canadian Natural Resources",CNR:"Canadian National Railway",COST:"Costco Wholesale",ENB:"Enbridge",FBTC:"Fidelity Bitcoin ETF",GOOGL:"Alphabet",JNJ:"Johnson & Johnson",JPM:"JPMorgan Chase",LIN:"Linde",LLY:"Eli Lilly",MSFT:"Microsoft",NVDA:"NVIDIA",RY:"Royal Bank of Canada",TRI:"Thomson Reuters",V:"Visa",WPM:"Wheaton Precious Metals",TSLA:"Tesla"};
+const TECH = new Set(["Information Technology","Communication Services"]);
+const YEAR=2027;
+const TYPES={DIVIDEND:["Dividend","var(--blue)"],INTEREST:["Interest","var(--teal)"],"CAPITAL GAIN":["Capital gain","var(--orange)"]};
+const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+const LS={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+let HIDE=LS.get("h27.hide")=="1";
+
+const $=id=>document.getElementById(id);
+const MASK=`<span class="mask">••••••</span>`;
+const money=v=>{const [w,c]=Math.abs(v).toFixed(2).split(".");return `<span class="cur">CA</span>$${Number(w).toLocaleString("en-US")}<span class="ct">.${c}</span>`};
+const fm=v=>HIDE?MASK:(v<0?"−":"")+money(v);
+const fp=v=>HIDE?MASK:(v>0?"+":v<0?"−":"")+money(v);
+const fprice=v=>HIDE?MASK:money(v);
+const fn=v=>HIDE?MASK:v.toLocaleString("en-US");
+const pc=(v,d=2)=>(v>0?"+":v<0?"−":"")+Math.abs(v).toFixed(d)+"%";
+const cl=v=>v>0?"up":v<0?"dn":"";
+const sum=(a,f)=>a.reduce((s,x)=>s+f(x),0);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const title=s=>String(s).toLowerCase().replace(/\b([a-z])/g,m=>m.toUpperCase());
+const CHEV=`<svg class="chev" viewBox="0 0 8 13"><path d="M1.5 1.5 6.5 6.5 1.5 11.5"/></svg>`;
+
+let DATA=[],T=0,I=0,P=0,ASOF="",INC=[],NET=null;
+const incOf=f=>sum(INC.filter(f),x=>x.amt);
+const divOf=t=>incOf(x=>x.type=="DIVIDEND"&&x.src.toUpperCase()==t.toUpperCase());
+const W=x=>x.m/T*100;
+function group(key){const g={};DATA.forEach(x=>{(g[x[key]]??={k:x[key],m:0,i:0,list:[]});g[x[key]].m+=x.m;g[x[key]].i+=x.i;g[x[key]].list.push(x)});return Object.values(g).map(o=>({...o,p:o.m-o.i,r:(o.m/o.i-1)*100})).sort((a,b)=>b.m-a.m)}
+
+function load(json){
+  DATA=json.rows.filter(x=>x.i>0).map(x=>{
+    let sec=title(x.sec); if(/^crypto/i.test(x.sec)) sec="Crypto";
+    return {t:x.t,n:NICE[x.t]||title(x.n),s:x.s,m:x.m,i:x.i,a:x.a,sec,c:CA.has(x.t)?"CA":"US",p:x.m-x.i,r:(x.m/x.i-1)*100};
+  });
+  T=sum(DATA,x=>x.m); I=sum(DATA,x=>x.i); P=T-I;
+  NET=json.net&&isFinite(json.net.assets)&&json.net.assets>0?json.net:null;
+  INC=(json.income||[]).filter(x=>String(x.d).startsWith(String(YEAR))).sort((a,b)=>b.d.localeCompare(a.d));
+  const d=new Date(json.asOf);
+  ASOF="Updated "+d.toLocaleString("en-US",{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"});
+  renderAll();
+}
+function renderAll(){
+  if(!DATA.length) return;
+  $("asof").textContent=ASOF;
+  renderSummary(); renderStocks(); renderAccounts(); renderSectors(); renderIncome();
+}
+
+function renderSummary(){
+  const gain=DATA.filter(x=>x.p>0), loss=DATA.filter(x=>x.p<0);
+  const G=sum(gain,x=>x.p), L=sum(loss,x=>x.p);
+  const worst=[...loss].sort((a,b)=>a.p-b.p).slice(0,2);
+  const worstShare=L?sum(worst,x=>x.p)/L*100:0;
+  const byW=[...DATA].sort((a,b)=>b.m-a.m), byR=[...DATA].sort((a,b)=>b.r-a.r);
+  const top5=sum(byW.slice(0,5),W), top10=sum(byW.slice(0,10),W);
+  const big=byW[0], small=byW[byW.length-1];
+  const ctry=group("c"), us=ctry.find(x=>x.k=="US")||{m:0,r:0,list:[]}, ca=ctry.find(x=>x.k=="CA")||{m:0,r:0,list:[]};
+  const techList=DATA.filter(x=>TECH.has(x.sec)), tech=sum(techList,W);
+  const incT=incOf(()=>true), divT=incOf(x=>x.type=="DIVIDEND");
+  $("v-sum").innerHTML=`
+  <div class="group pad" style="padding:16px 16px 16px">
+    <div class="cap">Market value</div>
+    <div class="hero">${fm(T)}</div>
+    <div class="chg ${cl(P)}">${HIDE?"":fp(P)+" "}(${pc(P/I*100)})</div>
+    <div class="desc">What all ${DATA.length} holdings are worth now — ${P>=0?"above":"below"} what you put in by ${pc(Math.abs(P/I*100)).replace("+","")}.</div>
+  </div>
+  <div class="tiles">
+    <div class="tile"><span class="cap">Invested</span><b>${fm(I)}</b><div class="tdesc">Total money you put in</div></div>
+    <div class="tile"><span class="cap">Holdings</span><b>${DATA.length}</b><div class="tdesc">${gain.length} up · ${loss.length} down</div></div>
+    <div class="tile"><span class="cap">${gain.length} gainers</span><b class="up">${fp(G)}</b><div class="tdesc">Best: ${esc(byR[0].t)} ${pc(byR[0].r)}</div></div>
+    <div class="tile"><span class="cap">${loss.length} losers</span><b class="dn">${fp(L)}</b><div class="tdesc">Worst: ${esc(byR[byR.length-1].t)} ${pc(byR[byR.length-1].r)}</div></div>
+    <div class="tile"><span class="cap">Income ${YEAR}</span><b>${fm(incT)}</b><div class="tdesc">${INC.length?`${INC.length} payments so far`:"Nothing recorded yet"}</div></div>
+    <div class="tile"><span class="cap">Dividend yield on cost</span><b>${(divT/I*100).toFixed(2)}%</b><div class="tdesc">Dividends ÷ invested</div></div>
+  </div>
+  ${worst.length?`<div class="callout"><b>${worstShare.toFixed(0)}%</b> of total losses come from <b>${worst.map(x=>esc(x.t)).join("</b> and <b>")}</b>.</div>`:""}
+  <div class="hdr">Concentration</div>
+  <div class="group">
+    <div class="desc cell-desc">Your top 5 holdings make up ${top5.toFixed(2)}% of the portfolio. The largest, ${esc(big.t)}, is ${W(big).toFixed(2)}%.</div>
+    <div class="cell"><div class="l">Top 5<div class="t3">${byW.slice(0,5).map(x=>esc(x.t)).join(" · ")}</div></div><div class="r sb">${top5.toFixed(2)}%</div></div>
+    <div class="cell"><div class="l">Top 10</div><div class="r sb">${top10.toFixed(2)}%</div></div>
+    <div class="cell"><div class="l">Largest</div><div class="r"><span class="t2">${esc(big.t)}</span>&nbsp; <span class="sb">${W(big).toFixed(2)}%</span></div></div>
+    <div class="cell"><div class="l">Smallest</div><div class="r"><span class="t2">${esc(small.t)}</span>&nbsp; <span class="sb">${W(small).toFixed(2)}%</span></div></div>
+    <div class="cell"><div class="l">Tech + Comm. Services<div class="t3">${techList.map(x=>esc(x.t)).join(" · ")}</div></div><div class="r sb">${tech.toFixed(2)}%</div></div>
+  </div>
+  <div class="hdr">Country</div>
+  <div class="group">
+    <div class="desc cell-desc">${(us.m/T*100).toFixed(2)}% is in US stocks and ${(ca.m/T*100).toFixed(2)}% in Canadian. ${us.r>ca.r?"US":"Canadian"} holdings are doing better.</div>
+    <div class="pad" style="padding-top:4px;padding-bottom:4px"><div class="split"><i style="width:${us.m/T*100}%;background:var(--blue)"></i><i style="width:${ca.m/T*100}%;background:var(--orange)"></i></div></div>
+    <div class="cell"><div class="l"><span class="dot" style="background:var(--blue)"></span>United States<div class="t3" style="margin-left:17px">${us.list.length} holdings</div></div><div class="r"><div class="sb">${(us.m/T*100).toFixed(2)}%</div><div class="t3 ${cl(us.r)}">${pc(us.r)}</div></div></div>
+    <div class="cell"><div class="l"><span class="dot" style="background:var(--orange)"></span>Canada<div class="t3" style="margin-left:17px">${ca.list.length} holdings${ca.list.some(x=>x.t=="FBTC")?" · incl. FBTC":""}</div></div><div class="r"><div class="sb">${(ca.m/T*100).toFixed(2)}%</div><div class="t3 ${cl(ca.r)}">${pc(ca.r)}</div></div></div>
+  </div>`;
+}
+
+/* Asset allocation — needs the "net" block from the Apps Script (2027 NET ASSETS sheet) */
+function allocHTML(){
+  if(!NET) return `
+  <div class="hdr">Asset Allocation</div>
+  <div class="group"><div class="desc cell-desc">Not available: this Apps Script link doesn't send the 2027 NET ASSETS numbers. Tap the gear and use the newest link (it ends in …AaAdMig/exec).</div></div>`;
+  const fb=sum(DATA.filter(x=>x.t=="FBTC"),x=>x.m);
+  const stocks=T-fb, gold=NET.gold||0, crypto=(NET.crypto||0)+fb;
+  const cash=Math.max(0,NET.assets-gold-(NET.crypto||0)-T), A=stocks+gold+cash+crypto;
+  const rows=[["Stocks","excl. FBTC",stocks,"var(--blue)"],["Gold & Silver","",gold,"var(--orange)"],["Cash + GIC","",cash,"var(--green)"],["Crypto","coins + FBTC",crypto,"var(--indigo)"]];
+  const top=[...rows].sort((a,b)=>b[2]-a[2]);
+  return `
+  <div class="hdr">Asset Allocation</div>
+  <div class="group">
+    <div class="desc cell-desc">${top[0][0]} make${top[0][0]=="Stocks"?"":"s"} up ${(top[0][2]/A*100).toFixed(2)}% of total assets. ${top[1][0]} is second at ${(top[1][2]/A*100).toFixed(2)}%.</div>
+    ${rows.map(([n,sub,v,c])=>`<div class="cell"><div class="l">${n}${sub?` <span class="t3">· ${sub}</span>`:""}<div class="abar"><i style="width:${v/A*100}%;background:${c}"></i></div><div class="t3" style="margin-top:4px">${fm(v)}</div></div><div class="r sb" style="align-self:flex-start;min-width:66px">${(v/A*100).toFixed(2)}%</div></div>`).join("")}
+    <div class="cell"><div class="l t2">Total assets</div><div class="r sb">${fm(NET.assets)}</div></div>
+    <div class="cell"><div class="l t2">Net assets<div class="t3">After ${fm(Math.abs(NET.debts||0))} debts · ${(Math.abs(NET.debts||0)/NET.assets*100).toFixed(2)}% of total assets</div></div><div class="r sb">${fm(NET.net)}</div></div>
+  </div>`;
+}
+
+const SORTS={r:["Return",(a,b)=>b.r-a.r],p:["P&L",(a,b)=>b.p-a.p],w:["Weight",(a,b)=>b.m-a.m],t:["Name",(a,b)=>a.t.localeCompare(b.t)]};
+let sortKey="r"; const OPEN=new Set();
+function renderStocks(){
+  const list=[...DATA].sort(SORTS[sortKey][1]);
+  const byR=[...DATA].sort((a,b)=>b.r-a.r), up=DATA.filter(x=>x.p>0).length;
+  $("v-stk").innerHTML=`<div class="seg">${Object.entries(SORTS).map(([k,[n]])=>`<button class="${k==sortKey?"on":""}" data-s="${k}">${esc(n)}</button>`).join("")}</div>
+  <div class="group">
+    <div class="desc cell-desc">${up} of ${DATA.length} holdings are up. Best is ${esc(byR[0].t)} (${pc(byR[0].r)}), worst is ${esc(byR[byR.length-1].t)} (${pc(byR[byR.length-1].r)}).</div>
+  ${list.map(x=>{
+    const iw=x.i/I*100, avg=x.i/x.s, cur=x.m/x.s, dv=divOf(x.t), o=OPEN.has(x.t);
+    return `<div class="cell ${o?"open-row":""}" data-t="${esc(x.t)}" style="cursor:pointer"><div class="l"><div class="sb">${esc(x.t)} <span class="t3" style="font-weight:400">${W(x).toFixed(2)}%</span></div><div class="t3 trunc">${esc(x.n)}</div></div>
+    <div class="r"><div class="sb ${cl(x.r)}">${pc(x.r)}</div><div class="t3">${fp(x.p)}</div></div>${CHEV}</div>
+    <div class="det ${o?"open":""}">
+      <div class="desc" style="margin:6px 0 4px">${esc(x.n)} is ${pc(x.r).replace("+","up ").replace("−","down ")} from your average cost and is ${W(x).toFixed(2)}% of the portfolio${Math.abs(W(x)-iw)>=0.5?` (${W(x)>iw?"grown":"shrunk"} from ${iw.toFixed(2)}%)`:""}.</div>
+      <div class="kv"><span>Account</span><span>${esc(x.a)}</span></div>
+      <div class="kv"><span>Sector</span><span>${esc(x.sec)}</span></div>
+      <div class="kv"><span>Shares</span><span>${fn(x.s)}</span></div>
+      <div class="kv"><span>Avg cost → Price</span><span>${fprice(avg)} → <span class="${cl(cur-avg)}">${fprice(cur)}</span></span></div>
+      <div class="kv"><span>Invested</span><span>${fm(x.i)}</span></div>
+      <div class="kv"><span>Market value</span><span>${fm(x.m)}</span></div>
+      <div class="kv"><span>Weight at cost → now</span><span>${iw.toFixed(2)}% → ${W(x).toFixed(2)}%</span></div>
+      <div class="kv"><span>Dividends ${YEAR}</span><span>${fm(dv)}</span></div>
+      <div class="kv"><span>Yield on cost</span><span>${(dv/x.i*100).toFixed(2)}%</span></div>
+    </div>`}).join("")}</div>
+  <div class="foot-note">Tap a holding for details. All amounts in CAD.</div>`;
+}
+$("v-stk").addEventListener("click",e=>{
+  const c=e.target.closest("[data-s]"); if(c){sortKey=c.dataset.s;renderStocks();return}
+  const r=e.target.closest("[data-t]"); if(r){const t=r.dataset.t;OPEN.has(t)?OPEN.delete(t):OPEN.add(t);r.classList.toggle("open-row");r.nextElementSibling.classList.toggle("open")}
+});
+
+function renderAccounts(){
+  const g=group("a");
+  const best=[...g].sort((a,b)=>b.r-a.r)[0];
+  $("v-acc").innerHTML=`<div class="callout" style="margin-top:0">${g.length} accounts. <b>${esc(g[0].k)}</b> is the largest (${(g[0].m/T*100).toFixed(2)}%); <b>${esc(best.k)}</b> has the best return (${pc(best.r)}).</div>`+
+  g.map(o=>{
+    const s=[...o.list].sort((a,b)=>b.r-a.r);
+    return `<div class="group pad">
+    <div style="display:flex;justify-content:space-between;align-items:baseline"><div class="sb">${esc(o.k)}</div><div class="t3">${o.list.length} holdings · ${(o.m/T*100).toFixed(2)}%</div></div>
+    <div class="acc-big">${fm(o.m)}</div>
+    <div class="t2"><span class="${cl(o.p)}" style="font-weight:600">${HIDE?"":fp(o.p)+" "}(${pc(o.r)})</span></div>
+    <div class="t3" style="margin-top:2px">Income ${YEAR}: ${fm(incOf(x=>x.a==o.k))}</div>
+    <div class="track"><i style="width:${o.m/T*100}%"></i></div>
+    <div class="desc">${s.length>1?`Leader ${esc(s[0].t)} (${pc(s[0].r)}), laggard ${esc(s[s.length-1].t)} (${pc(s[s.length-1].r)}).`:`Holds only ${esc(s[0].t)}.`}</div>
+    <div class="pills">${[...o.list].sort((a,b)=>b.m-a.m).map(x=>`<span class="pill">${esc(x.t)} <span class="${cl(x.r)}">${pc(x.r)}</span></span>`).join("")}</div>
+  </div>`}).join("")+allocHTML();
+}
+
+function renderSectors(){
+  const g=group("sec"), max=g[0].m, best=[...g].sort((a,b)=>b.r-a.r)[0], worst=[...g].sort((a,b)=>a.r-b.r)[0];
+  $("v-sec").innerHTML=`<div class="group">
+    <div class="desc cell-desc">${g.length} sectors. ${esc(g[0].k)} is the largest at ${(g[0].m/T*100).toFixed(2)}%. Best: ${esc(best.k)} (${pc(best.r)}); worst: ${esc(worst.k)} (${pc(worst.r)}).</div>
+  ${g.map(o=>`<div class="cell" style="display:block">
+    <div style="display:flex;justify-content:space-between;align-items:baseline"><span>${esc(o.k)}</span><span class="sb">${(o.m/T*100).toFixed(2)}%</span></div>
+    <div class="track"><i style="width:${o.m/max*100}%"></i></div>
+    <div style="display:flex;justify-content:space-between;margin-top:6px" class="t3"><span>${o.list.sort((a,b)=>b.m-a.m).map(x=>esc(x.t)).join(" · ")}</span><span class="${cl(o.r)}">${pc(o.r)}</span></div>
+  </div>`).join("")}</div>
+  <div class="foot-note">Bars are scaled to the largest sector.</div>`;
+}
+
+function renderIncome(){
+  const total=incOf(()=>true);
+  if(!INC.length){
+    $("v-inc").innerHTML=`<div class="group pad"><div class="cap">Total income ${YEAR}</div><div class="hero">${fm(0)}</div>
+    <div class="desc">No income recorded yet. Add a row to the INCOME tab in your sheet and it will appear here.</div></div>`;
+    return;
+  }
+  const byType=Object.entries(TYPES).map(([k,[n,c]])=>({k,n,c,v:incOf(x=>x.type==k)}));
+  const months=MON.map((m,i)=>{const mm=String(i+1).padStart(2,"0");const parts=byType.map(t=>({c:t.c,v:incOf(x=>x.type==t.k&&x.d.slice(5,7)==mm)}));return {m,parts,tot:sum(parts,p=>p.v)}});
+  const maxM=Math.max(1,...months.map(m=>sum(m.parts,p=>Math.max(0,p.v))));
+  const divT={};INC.filter(x=>x.type=="DIVIDEND").forEach(x=>{const k=x.src.toUpperCase();divT[k]=(divT[k]||0)+x.amt});
+  const divList=Object.entries(divT).map(([t,v])=>{const h=DATA.find(d=>d.t.toUpperCase()==t);return {t,v,yoc:h?v/h.i*100:null}}).sort((a,b)=>b.v-a.v);
+  const acc={};INC.forEach(x=>{acc[x.a]=(acc[x.a]||0)+x.amt});
+  const accList=Object.entries(acc).sort((a,b)=>b[1]-a[1]);
+  const active=months.filter(m=>m.tot), bestM=[...active].sort((a,b)=>b.tot-a.tot)[0];
+  const top=byType.slice().sort((a,b)=>b.v-a.v)[0];
+  $("v-inc").innerHTML=`
+  <div class="group pad" style="padding:16px"><div class="cap">Total income ${YEAR}</div><div class="hero ${total<0?"dn":""}">${fm(total)}</div>
+    <div class="desc">${INC.length} entries so far. Most of it is ${top.n.toLowerCase()} income.</div></div>
+  <div class="group">${byType.map(t=>`<div class="cell"><div class="l"><span class="dot" style="background:${t.c}"></span>${t.n}</div><div class="r ${t.v<0?"dn":""}">${fm(t.v)}</div></div>`).join("")}</div>
+  <div class="hdr">By month</div>
+  <div class="group pad">
+    <div class="desc" style="margin:0 0 12px">${bestM?`${bestM.m} was the biggest month (${fm(bestM.tot)}).`:""} ${active.length} of 12 months have income.</div>
+    <div class="months">${months.map(m=>`<div class="col">${m.parts.filter(p=>p.v>0).reverse().map(p=>`<i style="height:${p.v/maxM*100}%;background:${p.c}"></i>`).join("")||`<i></i>`}</div>`).join("")}</div>
+    <div class="mlab">${MON.map(m=>`<span>${m[0]}</span>`).join("")}</div>
+    <div class="legend">${byType.map(t=>`<span><span class="dot" style="background:${t.c};margin-right:5px"></span>${t.n}</span>`).join("")}</div>
+  </div>
+  <div class="group" style="margin-top:-12px">${active.map(m=>`<div class="cell"><div class="l">${m.m}</div><div class="r ${m.tot<0?"dn":""}">${fm(m.tot)}</div></div>`).join("")}</div>
+  ${divList.length?`<div class="hdr">Dividends by holding</div>
+  <div class="group"><div class="desc cell-desc">${divList.length} holdings have paid dividends. ${esc(divList[0].t)} paid the most.</div>${divList.map(d=>`<div class="cell"><div class="l sb">${esc(d.t)}</div><div class="r">${fm(d.v)}${d.yoc!=null?`<div class="t3">${d.yoc.toFixed(2)}% yield on cost</div>`:""}</div></div>`).join("")}</div>`:""}
+  <div class="hdr">By account</div>
+  <div class="group"><div class="desc cell-desc">${esc(accList[0][0]||"—")} received the most income.</div>${accList.map(([a,v])=>`<div class="cell"><div class="l">${esc(a||"—")}</div><div class="r ${v<0?"dn":""}">${fm(v)}</div></div>`).join("")}</div>
+  <div class="hdr">Recent</div>
+  <div class="group"><div class="desc cell-desc">The last ${Math.min(10,INC.length)} entries, newest first.</div>${INC.slice(0,10).map(x=>`<div class="cell"><div class="l"><div>${esc(x.src)}</div><div class="t3">${new Date(x.d+"T12:00").toLocaleDateString("en-US",{month:"short",day:"numeric"})} · ${esc((TYPES[x.type]||[x.type])[0])} · ${esc(x.a)}</div></div><div class="r ${x.amt<0?"dn":""}">${fp(x.amt)}</div></div>`).join("")}</div>
+  <div class="foot-note">All amounts in CAD.</div>`;
+}
+
+/* hide amounts */
+const EYE_ON='<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>';
+const EYE_OFF='<path d="M2 12s3.6-7 10-7c2 0 3.7.7 5.1 1.6M22 12s-3.6 7-10 7c-2 0-3.7-.7-5.1-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="M3 3l18 18"/>';
+function setEye(){$("eye").innerHTML=HIDE?EYE_ON:EYE_OFF;$("hide").setAttribute("aria-label",HIDE?"Show amounts":"Hide amounts")}
+$("hide").onclick=()=>{HIDE=!HIDE;LS.set("h27.hide",HIDE?"1":"0");setEye();renderAll()};
+setEye();
+
+/* tabs + swipe */
+const VIEWS=["sum","stk","acc","sec","inc"], NAMES={sum:"2027 Portfolio",stk:"Holdings",acc:"Accounts",sec:"Sectors",inc:"Income",setup:"Settings"};
+let cur="sum";
+function show(v){cur=v;["setup",...VIEWS].forEach(k=>$("v-"+k).classList.toggle("on",k==v));document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.v==v));$("title").textContent=NAMES[v];$("nav").style.display=v=="setup"?"none":"flex";$("hide").style.visibility=v=="setup"?"hidden":"visible";$("scroller").scrollTop=0}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>show(b.dataset.v));
+let sx=0,sy=0;
+document.addEventListener("touchstart",e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
+document.addEventListener("touchend",e=>{if(cur=="setup")return;const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5){if(e.target.closest(".seg"))return;const i=VIEWS.indexOf(cur)+(dx<0?1:-1);if(i>=0&&i<VIEWS.length)show(VIEWS[i])}},{passive:true});
+
+/* connection */
+async function fetchData(url,key){
+  const r=await fetch(url+(url.includes("?")?"&":"?")+"key="+encodeURIComponent(key),{cache:"no-store"});
+  const j=await r.json();
+  if(j.error) throw new Error(j.error=="unauthorized"?"Wrong access key.":j.error);
+  if(!Array.isArray(j.rows)||!j.rows.length) throw new Error("No holdings found in the sheet.");
+  return j;
+}
+async function refresh(){
+  const url=LS.get("h27.url"), key=LS.get("h27.key");
+  if(!url||!key){openSetup(false);return}
+  const cached=LS.get("h27.cache");
+  if(cached&&!DATA.length){try{load(JSON.parse(cached))}catch(e){}}
+  try{
+    const j=await fetchData(url,key);
+    LS.set("h27.cache",JSON.stringify(j)); load(j);
+  }catch(e){
+    if(DATA.length){$("asof").textContent=ASOF+" · couldn't refresh"}
+    else{$("v-sum").innerHTML=`<div class="empty">Couldn't load data.<div class="t3" style="margin-top:6px">${esc(e.message)}</div></div>`}
+  }
+}
+function openSetup(canCancel){
+  $("in-url").value=LS.get("h27.url")||""; $("in-key").value=LS.get("h27.key")||"";
+  $("cancel").style.display=canCancel?"block":"none"; $("setup-err").textContent="";
+  $("asof").textContent="";
+  show("setup");
+}
+$("gear").onclick=()=>openSetup(!!DATA.length);
+$("cancel").onclick=()=>{$("asof").textContent=ASOF;show("sum")};
+$("save").onclick=async()=>{
+  const url=$("in-url").value.trim(), key=$("in-key").value.trim();
+  if(!/^https:\/\/script\.google(usercontent)?\.com\//.test(url)){$("setup-err").textContent="Paste the Apps Script link that starts with https://script.google.com/";return}
+  if(!key){$("setup-err").textContent="Enter your access key.";return}
+  $("save").textContent="Connecting…";
+  try{
+    const j=await fetchData(url,key);
+    LS.set("h27.url",url); LS.set("h27.key",key); LS.set("h27.cache",JSON.stringify(j));
+    load(j); show("sum");
+  }catch(e){$("setup-err").textContent=e.message||"Couldn't connect. Check the link."}
+  $("save").textContent="Connect";
+};
+/* pull down hard to refresh */
+(function(){
+  const sc=$("scroller"), wrap=document.querySelector(".wrap"), ind=$("ptr"), txt=$("ptr-t"), spin=ind.querySelector(".spin");
+  const LIMIT=70; let y0=null, x0=0, pull=0, busy=false, vertical=null;
+  const paint=d=>{wrap.style.transform=d?`translateY(${d}px)`:"";ind.style.opacity=Math.min(d/LIMIT,1);if(!busy)spin.style.transform=`rotate(${d*4}deg)`;
+    if(!busy)txt.textContent=d>=LIMIT?"Release to refresh":"Pull to refresh"};
+  sc.addEventListener("touchstart",e=>{if(busy||cur=="setup"||sc.scrollTop>0){y0=null;return}
+    y0=e.touches[0].clientY;x0=e.touches[0].clientX;pull=0;vertical=null;wrap.style.transition=""},{passive:true});
+  sc.addEventListener("touchmove",e=>{if(y0==null)return;
+    const dy=e.touches[0].clientY-y0, dx=e.touches[0].clientX-x0;
+    if(vertical==null&&(Math.abs(dy)>6||Math.abs(dx)>6))vertical=Math.abs(dy)>Math.abs(dx);
+    if(!vertical||dy<=0||sc.scrollTop>0){if(pull){pull=0;paint(0)}return}
+    e.preventDefault(); pull=Math.min(dy*.5,120); paint(pull)},{passive:false});
+  sc.addEventListener("touchend",async()=>{if(y0==null)return;y0=null;
+    wrap.style.transition="transform .25s ease";
+    if(pull>=LIMIT){busy=true;paint(50);spin.style.transition="none";spin.style.transform="";ind.classList.add("busy");txt.textContent="Updating…";
+      const t0=Date.now(); try{await refresh()}catch(e){}
+      /* always finish whole turns (at least 2) so the circle never stops part-way */
+      const TURN=700, el=Date.now()-t0; await new Promise(r=>setTimeout(r,Math.max(2*TURN,Math.ceil(el/TURN)*TURN)-el));
+      busy=false;ind.classList.remove("busy");txt.textContent="Updated";}
+    pull=0;paint(0);requestAnimationFrame(()=>{spin.style.transition=""})},{passive:true});
+})();
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState=="visible"&&DATA.length)refresh()});
+refresh();
+</script>
+</body>
+</html>
