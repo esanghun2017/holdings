@@ -146,7 +146,7 @@ nav button.on svg{stroke-width:2}
   <section class="view" id="v-sec"></section>
   <section class="view" id="v-inc"></section>
 
-  <div class="foot">Holdings 2027 · v4.1</div>
+  <div class="foot">Holdings 2027 · v4.2</div>
 </div>
 </div>
 
@@ -358,44 +358,43 @@ const US_WHT=new Set(["COST","GOOGL","JNJ","JPM","LLY","MSFT","NVDA","V"]); // U
 let FX=Number(LS.get("h27.fx"))||1.38;
 fetch("https://api.frankfurter.app/latest?from=USD&to=CAD").then(r=>r.json()).then(j=>{const v=j&&j.rates&&j.rates.CAD;if(v>1&&v<2){FX=v;LS.set("h27.fx",String(v));if(DATA.length)renderIncome()}}).catch(()=>{});
 
-function upcomingQuarter(){
-  const now=new Date(), y=now.getFullYear();
-  const q=y<YEAR?0:Math.floor(now.getMonth()/3);
-  return {y:Math.max(y,YEAR),q};
-}
 function upcomingDivs(){
-  const {y,q}=upcomingQuarter(), out=[];
+  const y=YEAR, out=[];
+  const used=new Set(), divInc=INC.map((i,k)=>({...i,k})).filter(i=>i.type=="DIVIDEND");
   DATA.forEach(x=>{
     const d=DIVS[x.t.toUpperCase()]; if(!d||!x.s) return;
     const [cur,rate,dates]=d;
     dates.forEach(md=>{
-      const m=Number(md.slice(0,2))-1; if(Math.floor(m/3)!=q) return;
-      const date=`${y}-${md}`;
+      const date=`${y}-${md}`, m=Number(md.slice(0,2))-1, t0=new Date(date+"T12:00");
       const gross=x.s*rate*(cur=="USD"?FX:1);
       const wht=US_WHT.has(x.t.toUpperCase())&&/TFSA/i.test(x.a);
-      const est=wht?gross*0.85:gross;
-      const t0=new Date(date+"T12:00");
-      const got=INC.filter(i=>i.type=="DIVIDEND"&&i.src.toUpperCase()==x.t.toUpperCase()&&Math.abs(new Date(i.d+"T12:00")-t0)<=20*864e5);
-      out.push({t:x.t,a:x.a,s:x.s,cur,rate,date,m,wht,est,got:got.length?sum(got,i=>i.amt):null,amt:got.length?sum(got,i=>i.amt):est});
+      const mine=divInc.filter(i=>!used.has(i.k)&&i.src.toUpperCase()==x.t.toUpperCase()&&(!i.a||!x.a||i.a.toUpperCase()==x.a.toUpperCase()));
+      let got=mine.filter(i=>i.d.slice(5,7)==md.slice(0,2));
+      if(!got.length) got=mine.filter(i=>Math.abs(new Date(i.d+"T12:00")-t0)<=10*864e5).slice(0,1);
+      got.forEach(i=>used.add(i.k));
+      const rec=got.length>0;
+      out.push({t:x.t,a:x.a,s:x.s,cur,rate,wht,rec,date:rec?got[0].d:date,m:rec?Number(got[0].d.slice(5,7))-1:m,est:wht?gross*0.85:gross,amt:rec?sum(got,i=>i.amt):(wht?gross*0.85:gross)});
     });
   });
-  return {y,q,list:out.sort((a,b)=>a.date.localeCompare(b.date)||b.amt-a.amt)};
+  /* dividends you entered that aren't on the schedule (e.g. a special dividend) */
+  divInc.filter(i=>!used.has(i.k)&&String(i.d).startsWith(String(y))).forEach(i=>out.push({t:i.src,a:i.a,rec:true,date:i.d,m:Number(i.d.slice(5,7))-1,amt:i.amt}));
+  return {y,list:out.sort((a,b)=>a.date.localeCompare(b.date)||b.amt-a.amt)};
 }
 function upcomingHTML(){
-  const {y,q,list}=upcomingDivs();
-  const ms=[q*3,q*3+1,q*3+2], range=`${MON[ms[0]]} – ${MON[ms[2]]} ${y}`;
-  if(!list.length) return `<div class="hdr">Upcoming dividends · ${range}</div><div class="group"><div class="desc cell-desc">No dividends expected in these months.</div></div>`;
-  const tot=sum(list,x=>x.amt), got=list.filter(x=>x.got!=null), today=new Date().toISOString().slice(0,10);
-  const left=list.filter(x=>x.got==null&&x.date>=today);
-  const next=left[0];
-  return `<div class="hdr">Upcoming dividends · ${range} · Estimate</div>
+  const {y,list}=upcomingDivs();
+  if(!list.length) return `<div class="hdr">Upcoming dividends · ${y}</div><div class="group"><div class="desc cell-desc">No dividends expected this year.</div></div>`;
+  const tot=sum(list,x=>x.amt), rec=list.filter(x=>x.rec), left=list.filter(x=>!x.rec), anyEst=left.length>0;
+  const today=new Date().toISOString().slice(0,10), next=left.find(x=>x.date>=today);
+  const D=d=>new Date(d+"T12:00").toLocaleDateString("en-US",{month:"short",day:"numeric"});
+  return `<div class="hdr">Upcoming dividends · Jan – Dec ${y}</div>
   <div class="group">
-    <div class="pad" style="padding-bottom:4px"><div class="cap">Estimated total this quarter <span class="tag">ESTIMATE</span></div><div class="acc-big" style="margin-top:2px">${fm(tot)}</div></div>
-    <div class="desc cell-desc">${list.length} payments from ${new Set(list.map(x=>x.t)).size} holdings${got.length?`, ${got.length} already received`:""}.${next?` Next: ${esc(next.t)} on ${new Date(next.date+"T12:00").toLocaleDateString("en-US",{month:"short",day:"numeric"})}.`:""}</div>
-    ${ms.map(m=>{const L=list.filter(x=>x.m==m);if(!L.length)return "";
-      return `<div class="mhdr"><span>${MON[m]}</span><b>${fm(sum(L,x=>x.amt))}</b></div>`+L.map(x=>`<div class="cell"><div class="l"><div><span class="sb">${esc(x.t)}</span>${x.got!=null?`<span class="tag ok">Received</span>`:`<span class="tag">Estimate</span>`}</div><div class="t3">${new Date(x.date+"T12:00").toLocaleDateString("en-US",{month:"short",day:"numeric"})} · ${esc(x.a)}</div></div><div class="r"><div class="${x.got!=null?"sb":""}">${x.got!=null?fm(x.got):"≈ "+fm(x.est)}</div><div class="t3">${HIDE?"":fn(x.s)+" × "}${x.cur=="USD"?"US$":"$"}${x.rate}${x.wht&&x.got==null?" · −15% US tax":""}</div></div></div>`).join("")}).join("")}
+    <div class="pad" style="padding-bottom:4px"><div class="cap">${anyEst?`Estimated total ${y} <span class="tag">ESTIMATE</span>`:`Total ${y}`}</div><div class="acc-big ${anyEst?"":"up"}" style="margin-top:2px">${fm(tot)}</div>
+    ${rec.length?`<div class="t3" style="margin-top:4px">Received so far <span class="up sb">${fm(sum(rec,x=>x.amt))}</span>${anyEst?` · still to come ≈ ${fm(sum(left,x=>x.amt))}`:""}</div>`:""}</div>
+    <div class="desc cell-desc">${list.length} payments${rec.length?`, ${rec.length} received`:""}.${next?` Next: ${esc(next.t)} on ${D(next.date)}.`:""}</div>
+    ${MON.map((mn,m)=>{const L=list.filter(x=>x.m==m);if(!L.length)return "";const done=L.every(x=>x.rec);
+      return `<div class="mhdr"><span>${mn}${done?"":` <span class="tag" style="text-transform:none">Estimate</span>`}</span><b class="${done?"up":""}">${fm(sum(L,x=>x.amt))}</b></div>`+L.map(x=>`<div class="cell"><div class="l"><div><span class="sb">${esc(x.t)}</span>${x.rec?`<span class="tag ok">Received</span>`:`<span class="tag">Estimate</span>`}</div><div class="t3">${D(x.date)} · ${esc(x.a||"—")}</div></div><div class="r"><div class="${x.rec?"up sb":""}">${x.rec?fm(x.amt):"≈ "+fm(x.est)}</div>${x.rec?`<div class="t3">Your entry</div>`:`<div class="t3">${HIDE?"":fn(x.s)+" × "}${x.cur=="USD"?"US$":"$"}${x.rate}${x.wht?" · −15% US tax":""}</div>`}</div></div>`).join("")}).join("")}
   </div>
-  <div class="foot-note">ESTIMATE — actual amounts will differ a little because of the exchange rate, foreign tax withheld, and dividend changes. Based on current dividend rates × your shares; dates are the usual pay dates and may shift a few days. US$ converted at ${FX.toFixed(2)}. Rows turn “Received” once you add them to the INCOME tab. The list moves to the next 3 months when a new quarter starts.</div>`;
+  <div class="foot-note">${anyEst?`ESTIMATE rows: actual amounts will differ a little because of the exchange rate, foreign tax withheld, and dividend changes. Based on current dividend rates × your shares; dates are usual pay dates and may shift a few days. US$ converted at ${FX.toFixed(2)}. `:""}Green rows use the amounts you entered in the INCOME tab.</div>`;
 }
 
 function renderIncome(){
