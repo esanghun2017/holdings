@@ -112,6 +112,10 @@ nav button svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width
 nav button.on{color:var(--blue)}
 nav button.on svg{stroke-width:2}
 .view{display:none}.view.on{display:block}
+.tag{display:inline-block;font-size:11px;font-weight:600;border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:1px;background:var(--fill);color:var(--label2)}
+.tag.ok{background:rgba(52,199,89,.16);color:var(--green)}
+.mhdr{display:flex;justify-content:space-between;align-items:baseline;padding:10px 16px 6px;background:var(--fill2);font-size:13px;color:var(--label2);text-transform:uppercase}
+.mhdr b{color:var(--label);font-weight:600;text-transform:none}
 .foot{text-align:center;color:var(--label3);font-size:11px;margin-top:8px}
 </style>
 </head>
@@ -142,7 +146,7 @@ nav button.on svg{stroke-width:2}
   <section class="view" id="v-sec"></section>
   <section class="view" id="v-inc"></section>
 
-  <div class="foot">Holdings 2027 · v3.9.2</div>
+  <div class="foot">Holdings 2027 · v4.0</div>
 </div>
 </div>
 
@@ -329,11 +333,76 @@ function renderSectors(){
   <div class="foot-note">Bars are scaled to the largest sector.</div>`;
 }
 
+/* Upcoming dividends — public per-share rates & usual pay dates (no personal numbers).
+   Amount = your shares (from the sheet) × rate. Dates/rates for 2027 are estimates from the 2026 pattern. */
+const DIVS={
+  AEM:["USD",0.45,["03-15","06-15","09-15","12-15"]],
+  ATRL:["CAD",0.02,["03-26","06-11","09-03","12-03"]],
+  CNQ:["CAD",0.625,["01-05","04-07","07-07","10-05"]],
+  CNR:["CAD",0.915,["03-30","06-29","09-29","12-30"]],
+  COST:["USD",1.47,["02-12","05-14","08-13","11-12"]],
+  ENB:["CAD",0.97,["03-01","06-01","09-01","12-01"]],
+  GOOGL:["USD",0.22,["03-15","06-14","09-13","12-13"]],
+  JNJ:["USD",1.34,["03-09","06-08","09-08","12-07"]],
+  JPM:["USD",1.65,["01-31","04-30","07-31","10-31"]],
+  LIN:["USD",1.60,["03-25","06-17","09-16","12-16"]],
+  LLY:["USD",1.73,["03-10","06-10","09-10","12-10"]],
+  MSFT:["USD",0.98,["03-11","06-10","09-09","12-09"]],
+  NVDA:["USD",0.25,["04-01","06-25","10-01","12-23"]],
+  RY:["CAD",1.76,["02-24","05-24","08-24","11-24"]],
+  TRI:["USD",0.655,["03-10","06-10","09-10","12-10"]],
+  V:["USD",0.78,["03-01","06-01","09-01","12-01"]],
+  WPM:["USD",0.195,["04-09","06-09","09-03","12-03"]]
+};
+const US_WHT=new Set(["COST","GOOGL","JNJ","JPM","LLY","MSFT","NVDA","V"]); // US companies: 15% US tax held back in a TFSA (not in an RRSP)
+let FX=Number(LS.get("h27.fx"))||1.38;
+fetch("https://api.frankfurter.app/latest?from=USD&to=CAD").then(r=>r.json()).then(j=>{const v=j&&j.rates&&j.rates.CAD;if(v>1&&v<2){FX=v;LS.set("h27.fx",String(v));if(DATA.length)renderIncome()}}).catch(()=>{});
+
+function upcomingQuarter(){
+  const now=new Date(), y=now.getFullYear();
+  const q=y<YEAR?0:Math.floor(now.getMonth()/3);
+  return {y:Math.max(y,YEAR),q};
+}
+function upcomingDivs(){
+  const {y,q}=upcomingQuarter(), out=[];
+  DATA.forEach(x=>{
+    const d=DIVS[x.t.toUpperCase()]; if(!d||!x.s) return;
+    const [cur,rate,dates]=d;
+    dates.forEach(md=>{
+      const m=Number(md.slice(0,2))-1; if(Math.floor(m/3)!=q) return;
+      const date=`${y}-${md}`;
+      const gross=x.s*rate*(cur=="USD"?FX:1);
+      const wht=US_WHT.has(x.t.toUpperCase())&&/TFSA/i.test(x.a);
+      const est=wht?gross*0.85:gross;
+      const t0=new Date(date+"T12:00");
+      const got=INC.filter(i=>i.type=="DIVIDEND"&&i.src.toUpperCase()==x.t.toUpperCase()&&Math.abs(new Date(i.d+"T12:00")-t0)<=20*864e5);
+      out.push({t:x.t,a:x.a,s:x.s,cur,rate,date,m,wht,est,got:got.length?sum(got,i=>i.amt):null,amt:got.length?sum(got,i=>i.amt):est});
+    });
+  });
+  return {y,q,list:out.sort((a,b)=>a.date.localeCompare(b.date)||b.amt-a.amt)};
+}
+function upcomingHTML(){
+  const {y,q,list}=upcomingDivs();
+  const ms=[q*3,q*3+1,q*3+2], range=`${MON[ms[0]]} – ${MON[ms[2]]} ${y}`;
+  if(!list.length) return `<div class="hdr">Upcoming dividends · ${range}</div><div class="group"><div class="desc cell-desc">No dividends expected in these months.</div></div>`;
+  const tot=sum(list,x=>x.amt), got=list.filter(x=>x.got!=null), today=new Date().toISOString().slice(0,10);
+  const left=list.filter(x=>x.got==null&&x.date>=today);
+  const next=left[0];
+  return `<div class="hdr">Upcoming dividends · ${range}</div>
+  <div class="group">
+    <div class="pad" style="padding-bottom:4px"><div class="cap">Expected this quarter</div><div class="acc-big" style="margin-top:2px">${fm(tot)}</div></div>
+    <div class="desc cell-desc">${list.length} payments from ${new Set(list.map(x=>x.t)).size} holdings${got.length?`, ${got.length} already received`:""}.${next?` Next: ${esc(next.t)} on ${new Date(next.date+"T12:00").toLocaleDateString("en-US",{month:"short",day:"numeric"})}.`:""}</div>
+    ${ms.map(m=>{const L=list.filter(x=>x.m==m);if(!L.length)return "";
+      return `<div class="mhdr"><span>${MON[m]}</span><b>${fm(sum(L,x=>x.amt))}</b></div>`+L.map(x=>`<div class="cell"><div class="l"><div><span class="sb">${esc(x.t)}</span>${x.got!=null?`<span class="tag ok">Received</span>`:""}</div><div class="t3">${new Date(x.date+"T12:00").toLocaleDateString("en-US",{month:"short",day:"numeric"})} · ${esc(x.a)}</div></div><div class="r"><div class="${x.got!=null?"sb":""}">${x.got!=null?fm(x.got):"≈ "+fm(x.est)}</div><div class="t3">${HIDE?"":fn(x.s)+" × "}${x.cur=="USD"?"US$":"$"}${x.rate}${x.wht&&x.got==null?" · −15% US tax":""}</div></div></div>`).join("")}).join("")}
+  </div>
+  <div class="foot-note">Estimated from current dividend rates and your shares; dates are the usual pay dates and may shift a few days. US$ converted at ${FX.toFixed(2)}. Rows turn “Received” once you add them to the INCOME tab. The list moves to the next 3 months when a new quarter starts.</div>`;
+}
+
 function renderIncome(){
   const total=incOf(()=>true);
   if(!INC.length){
     $("v-inc").innerHTML=`<div class="group pad"><div class="cap">Total income ${YEAR}</div><div class="hero">${fm(0)}</div>
-    <div class="desc">No income recorded yet. Add a row to the INCOME tab in your sheet and it will appear here.</div></div>`;
+    <div class="desc">No income recorded yet. Add a row to the INCOME tab in your sheet and it will appear here.</div></div>${upcomingHTML()}`;
     return;
   }
   const byType=Object.entries(TYPES).map(([k,[n,c]])=>({k,n,c,v:incOf(x=>x.type==k)}));
@@ -348,6 +417,7 @@ function renderIncome(){
   $("v-inc").innerHTML=`
   <div class="group pad" style="padding:16px"><div class="cap">Total income ${YEAR}</div><div class="hero ${total<0?"dn":""}">${fm(total)}</div>
     <div class="desc">${INC.length} entries so far. Most of it is ${top.n.toLowerCase()} income.</div></div>
+  ${upcomingHTML()}
   <div class="group">${byType.map(t=>`<div class="cell"><div class="l"><span class="dot" style="background:${t.c}"></span>${t.n}</div><div class="r ${t.v<0?"dn":""}">${fm(t.v)}</div></div>`).join("")}</div>
   <div class="hdr">By month</div>
   <div class="group pad">
