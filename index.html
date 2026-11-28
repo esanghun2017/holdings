@@ -146,7 +146,7 @@ nav button.on svg{stroke-width:2}
   <section class="view" id="v-sec"></section>
   <section class="view" id="v-inc"></section>
 
-  <div class="foot">Holdings 2027 · v4.0</div>
+  <div class="foot">Holdings 2027 · v4.1</div>
 </div>
 </div>
 
@@ -388,14 +388,14 @@ function upcomingHTML(){
   const tot=sum(list,x=>x.amt), got=list.filter(x=>x.got!=null), today=new Date().toISOString().slice(0,10);
   const left=list.filter(x=>x.got==null&&x.date>=today);
   const next=left[0];
-  return `<div class="hdr">Upcoming dividends · ${range}</div>
+  return `<div class="hdr">Upcoming dividends · ${range} · Estimate</div>
   <div class="group">
-    <div class="pad" style="padding-bottom:4px"><div class="cap">Expected this quarter</div><div class="acc-big" style="margin-top:2px">${fm(tot)}</div></div>
+    <div class="pad" style="padding-bottom:4px"><div class="cap">Estimated total this quarter <span class="tag">ESTIMATE</span></div><div class="acc-big" style="margin-top:2px">${fm(tot)}</div></div>
     <div class="desc cell-desc">${list.length} payments from ${new Set(list.map(x=>x.t)).size} holdings${got.length?`, ${got.length} already received`:""}.${next?` Next: ${esc(next.t)} on ${new Date(next.date+"T12:00").toLocaleDateString("en-US",{month:"short",day:"numeric"})}.`:""}</div>
     ${ms.map(m=>{const L=list.filter(x=>x.m==m);if(!L.length)return "";
-      return `<div class="mhdr"><span>${MON[m]}</span><b>${fm(sum(L,x=>x.amt))}</b></div>`+L.map(x=>`<div class="cell"><div class="l"><div><span class="sb">${esc(x.t)}</span>${x.got!=null?`<span class="tag ok">Received</span>`:""}</div><div class="t3">${new Date(x.date+"T12:00").toLocaleDateString("en-US",{month:"short",day:"numeric"})} · ${esc(x.a)}</div></div><div class="r"><div class="${x.got!=null?"sb":""}">${x.got!=null?fm(x.got):"≈ "+fm(x.est)}</div><div class="t3">${HIDE?"":fn(x.s)+" × "}${x.cur=="USD"?"US$":"$"}${x.rate}${x.wht&&x.got==null?" · −15% US tax":""}</div></div></div>`).join("")}).join("")}
+      return `<div class="mhdr"><span>${MON[m]}</span><b>${fm(sum(L,x=>x.amt))}</b></div>`+L.map(x=>`<div class="cell"><div class="l"><div><span class="sb">${esc(x.t)}</span>${x.got!=null?`<span class="tag ok">Received</span>`:`<span class="tag">Estimate</span>`}</div><div class="t3">${new Date(x.date+"T12:00").toLocaleDateString("en-US",{month:"short",day:"numeric"})} · ${esc(x.a)}</div></div><div class="r"><div class="${x.got!=null?"sb":""}">${x.got!=null?fm(x.got):"≈ "+fm(x.est)}</div><div class="t3">${HIDE?"":fn(x.s)+" × "}${x.cur=="USD"?"US$":"$"}${x.rate}${x.wht&&x.got==null?" · −15% US tax":""}</div></div></div>`).join("")}).join("")}
   </div>
-  <div class="foot-note">Estimated from current dividend rates and your shares; dates are the usual pay dates and may shift a few days. US$ converted at ${FX.toFixed(2)}. Rows turn “Received” once you add them to the INCOME tab. The list moves to the next 3 months when a new quarter starts.</div>`;
+  <div class="foot-note">ESTIMATE — actual amounts will differ a little because of the exchange rate, foreign tax withheld, and dividend changes. Based on current dividend rates × your shares; dates are the usual pay dates and may shift a few days. US$ converted at ${FX.toFixed(2)}. Rows turn “Received” once you add them to the INCOME tab. The list moves to the next 3 months when a new quarter starts.</div>`;
 }
 
 function renderIncome(){
