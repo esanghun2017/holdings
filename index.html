@@ -147,7 +147,7 @@ nav button.on svg{stroke-width:2}
   <section class="view" id="v-sec"></section>
   <section class="view" id="v-inc"></section>
 
-  <div class="foot">Holdings 2027 · v4.3</div>
+  <div class="foot">Holdings 2027 · v4.4</div>
 </div>
 </div>
 
@@ -194,11 +194,11 @@ function group(key){const g={};DATA.forEach(x=>{(g[x[key]]??={k:x[key],m:0,i:0,l
 function load(json){
   DATA=json.rows.filter(x=>x.i>0).map(x=>{
     let sec=title(x.sec); if(/^crypto/i.test(x.sec)) sec="Crypto";
-    return {t:x.t,n:NICE[x.t]||title(x.n),s:x.s,m:x.m,i:x.i,a:x.a,sec,c:CA.has(x.t)?"CA":"US",p:x.m-x.i,r:(x.m/x.i-1)*100};
+    return {t:String(x.t),n:NICE[x.t]||title(x.n),s:Number(x.s)||0,m:x.m,i:x.i,a:String(x.a||""),sec,c:CA.has(x.t)?"CA":"US",p:x.m-x.i,r:(x.m/x.i-1)*100};
   });
   T=sum(DATA,x=>x.m); I=sum(DATA,x=>x.i); P=T-I;
   NET=json.net&&isFinite(json.net.assets)&&json.net.assets>0?json.net:null;
-  INC=(json.income||[]).filter(x=>String(x.d).startsWith(String(YEAR))).sort((a,b)=>b.d.localeCompare(a.d));
+  INC=(json.income||[]).map(x=>({...x,d:String(x.d||""),src:String(x.src||""),a:String(x.a||""),type:String(x.type||"").toUpperCase(),amt:Number(x.amt)||0})).filter(x=>String(x.d).startsWith(String(YEAR))).sort((a,b)=>b.d.localeCompare(a.d));
   const d=new Date(json.asOf);
   ASOF="Updated "+d.toLocaleString("en-US",{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"});
   renderAll();
@@ -206,7 +206,9 @@ function load(json){
 function renderAll(){
   if(!DATA.length) return;
   $("asof").textContent=ASOF;
-  renderSummary(); renderStocks(); renderAccounts(); renderSectors(); renderIncome();
+  const bad=[];
+  [["Home",renderSummary],["Holdings",renderStocks],["Accounts",renderAccounts],["Sectors",renderSectors],["Income",renderIncome]].forEach(([n,f])=>{try{f()}catch(e){bad.push(n);console.error(n,e)}});
+  if(bad.length) $("asof").textContent=ASOF+" · display problem on "+bad.join(", ");
 }
 
 function renderSummary(){
@@ -357,7 +359,7 @@ const DIVS={
 };
 const US_WHT=new Set(["COST","GOOGL","JNJ","JPM","LLY","MSFT","NVDA","V"]); // US companies: 15% US tax held back in a TFSA (not in an RRSP)
 let FX=Number(LS.get("h27.fx"))||1.38;
-fetch("https://api.frankfurter.app/latest?from=USD&to=CAD").then(r=>r.json()).then(j=>{const v=j&&j.rates&&j.rates.CAD;if(v>1&&v<2){FX=v;LS.set("h27.fx",String(v));if(DATA.length)renderIncome()}}).catch(()=>{});
+fetch("https://open.er-api.com/v6/latest/USD").then(r=>r.json()).then(j=>{const v=j&&j.rates&&j.rates.CAD;if(v>1&&v<2){FX=v;LS.set("h27.fx",String(v));if(DATA.length){try{renderIncome()}catch(e){}}}}).catch(()=>{});
 
 function upcomingDivs(){
   const y=YEAR, out=[];
@@ -472,7 +474,7 @@ async function refresh(){
     const j=await fetchData(url,key);
     LS.set("h27.cache",JSON.stringify(j)); load(j);
   }catch(e){
-    if(DATA.length){$("asof").textContent=ASOF+" · couldn't refresh"}
+    if(DATA.length){$("asof").textContent=ASOF+" · couldn't refresh ("+(e.message||"error")+")"}
     else{$("v-sum").innerHTML=`<div class="empty">Couldn't load data.<div class="t3" style="margin-top:6px">${esc(e.message)}</div></div>`}
   }
 }
