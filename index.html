@@ -147,7 +147,7 @@ nav button.on svg{stroke-width:2}
   <section class="view" id="v-sec"></section>
   <section class="view" id="v-inc"></section>
 
-  <div class="foot">Holdings 2027 · v4.4</div>
+  <div class="foot">Holdings 2027 · v4.5</div>
 </div>
 </div>
 
@@ -388,11 +388,11 @@ function upcomingDivs(){
 const TYPE_TAG={DIVIDEND:"Dividend",INTEREST:"Interest","CAPITAL GAIN":"Capital Gain (P/L)"};
 function upcomingHTML(){
   const {y,list}=upcomingDivs();
-  if(!list.length) return `<div class="hdr">Income Calendar · ${y}</div><div class="group"><div class="desc cell-desc">Nothing expected this year.</div></div>`;
+  if(!list.length) return `<div class="hdr" style="text-transform:none">Income Calendar · ${y}</div><div class="group"><div class="desc cell-desc">Nothing expected this year.</div></div>`;
   const tot=sum(list,x=>x.amt), rec=list.filter(x=>x.rec), left=list.filter(x=>!x.rec), anyEst=left.length>0;
   const today=new Date().toISOString().slice(0,10), next=left.find(x=>x.date>=today);
   const D=d=>new Date(d+"T12:00").toLocaleDateString("en-US",{month:"short",day:"numeric"});
-  return `<div class="hdr">Income Calendar · Jan – Dec ${y}</div>
+  return `<div class="hdr" style="text-transform:none">Income Calendar · Jan – Dec ${y}</div>
   <div class="group">
     <div class="pad" style="padding-bottom:4px"><div class="cap">${anyEst?`Estimated total ${y} <span class="tag">ESTIMATE</span>`:`Total ${y}`}</div><div class="acc-big ${anyEst?"":"up"}" style="margin-top:2px">${fm(tot)}</div>
     ${rec.length?`<div class="t3" style="margin-top:4px">Received so far <span class="up sb">${fm(sum(rec,x=>x.amt))}</span>${anyEst?` · still to come ≈ ${fm(sum(left,x=>x.amt))}`:""}</div>`:""}</div>
