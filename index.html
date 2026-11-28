@@ -113,6 +113,7 @@ nav button.on{color:var(--blue)}
 nav button.on svg{stroke-width:2}
 .view{display:none}.view.on{display:block}
 .tag{display:inline-block;font-size:11px;font-weight:600;border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:1px;background:var(--fill);color:var(--label2)}
+.tag.neg{background:rgba(255,59,48,.14);color:var(--red)}
 .tag.ok{background:rgba(52,199,89,.16);color:var(--green)}
 .mhdr{display:flex;justify-content:space-between;align-items:baseline;padding:10px 16px 6px;background:var(--fill2);font-size:13px;color:var(--label2);text-transform:uppercase}
 .mhdr b{color:var(--label);font-weight:600;text-transform:none}
@@ -146,7 +147,7 @@ nav button.on svg{stroke-width:2}
   <section class="view" id="v-sec"></section>
   <section class="view" id="v-inc"></section>
 
-  <div class="foot">Holdings 2027 · v4.2</div>
+  <div class="foot">Holdings 2027 · v4.3</div>
 </div>
 </div>
 
@@ -373,28 +374,31 @@ function upcomingDivs(){
       if(!got.length) got=mine.filter(i=>Math.abs(new Date(i.d+"T12:00")-t0)<=10*864e5).slice(0,1);
       got.forEach(i=>used.add(i.k));
       const rec=got.length>0;
-      out.push({t:x.t,a:x.a,s:x.s,cur,rate,wht,rec,date:rec?got[0].d:date,m:rec?Number(got[0].d.slice(5,7))-1:m,est:wht?gross*0.85:gross,amt:rec?sum(got,i=>i.amt):(wht?gross*0.85:gross)});
+      out.push({t:x.t,a:x.a,s:x.s,cur,rate,wht,rec,type:"DIVIDEND",date:rec?got[0].d:date,m:rec?Number(got[0].d.slice(5,7))-1:m,est:wht?gross*0.85:gross,amt:rec?sum(got,i=>i.amt):(wht?gross*0.85:gross)});
     });
   });
   /* dividends you entered that aren't on the schedule (e.g. a special dividend) */
-  divInc.filter(i=>!used.has(i.k)&&String(i.d).startsWith(String(y))).forEach(i=>out.push({t:i.src,a:i.a,rec:true,date:i.d,m:Number(i.d.slice(5,7))-1,amt:i.amt}));
+  divInc.filter(i=>!used.has(i.k)&&String(i.d).startsWith(String(y))).forEach(i=>out.push({t:i.src,a:i.a,rec:true,type:"DIVIDEND",date:i.d,m:Number(i.d.slice(5,7))-1,amt:i.amt}));
+  /* interest and capital gains (P/L) you entered */
+  INC.filter(i=>i.type!="DIVIDEND"&&String(i.d).startsWith(String(y))).forEach(i=>out.push({t:i.src,a:i.a,rec:true,type:i.type,date:i.d,m:Number(i.d.slice(5,7))-1,amt:i.amt}));
   return {y,list:out.sort((a,b)=>a.date.localeCompare(b.date)||b.amt-a.amt)};
 }
+const TYPE_TAG={DIVIDEND:"Dividend",INTEREST:"Interest","CAPITAL GAIN":"Capital Gain (P/L)"};
 function upcomingHTML(){
   const {y,list}=upcomingDivs();
-  if(!list.length) return `<div class="hdr">Upcoming dividends · ${y}</div><div class="group"><div class="desc cell-desc">No dividends expected this year.</div></div>`;
+  if(!list.length) return `<div class="hdr">Income Calendar · ${y}</div><div class="group"><div class="desc cell-desc">Nothing expected this year.</div></div>`;
   const tot=sum(list,x=>x.amt), rec=list.filter(x=>x.rec), left=list.filter(x=>!x.rec), anyEst=left.length>0;
   const today=new Date().toISOString().slice(0,10), next=left.find(x=>x.date>=today);
   const D=d=>new Date(d+"T12:00").toLocaleDateString("en-US",{month:"short",day:"numeric"});
-  return `<div class="hdr">Upcoming dividends · Jan – Dec ${y}</div>
+  return `<div class="hdr">Income Calendar · Jan – Dec ${y}</div>
   <div class="group">
     <div class="pad" style="padding-bottom:4px"><div class="cap">${anyEst?`Estimated total ${y} <span class="tag">ESTIMATE</span>`:`Total ${y}`}</div><div class="acc-big ${anyEst?"":"up"}" style="margin-top:2px">${fm(tot)}</div>
     ${rec.length?`<div class="t3" style="margin-top:4px">Received so far <span class="up sb">${fm(sum(rec,x=>x.amt))}</span>${anyEst?` · still to come ≈ ${fm(sum(left,x=>x.amt))}`:""}</div>`:""}</div>
-    <div class="desc cell-desc">${list.length} payments${rec.length?`, ${rec.length} received`:""}.${next?` Next: ${esc(next.t)} on ${D(next.date)}.`:""}</div>
+    <div class="desc cell-desc">${list.length} entries${rec.length?`, ${rec.length} received`:""}.${next?` Next: ${esc(next.t)} on ${D(next.date)}.`:""}</div>
     ${MON.map((mn,m)=>{const L=list.filter(x=>x.m==m);if(!L.length)return "";const done=L.every(x=>x.rec);
-      return `<div class="mhdr"><span>${mn}${done?"":` <span class="tag" style="text-transform:none">Estimate</span>`}</span><b class="${done?"up":""}">${fm(sum(L,x=>x.amt))}</b></div>`+L.map(x=>`<div class="cell"><div class="l"><div><span class="sb">${esc(x.t)}</span>${x.rec?`<span class="tag ok">Received</span>`:`<span class="tag">Estimate</span>`}</div><div class="t3">${D(x.date)} · ${esc(x.a||"—")}</div></div><div class="r"><div class="${x.rec?"up sb":""}">${x.rec?fm(x.amt):"≈ "+fm(x.est)}</div>${x.rec?`<div class="t3">Your entry</div>`:`<div class="t3">${HIDE?"":fn(x.s)+" × "}${x.cur=="USD"?"US$":"$"}${x.rate}${x.wht?" · −15% US tax":""}</div>`}</div></div>`).join("")}).join("")}
+      return `<div class="mhdr"><span>${mn}${done?"":` <span class="tag" style="text-transform:none">Estimate</span>`}</span><b class="${done?(sum(L,x=>x.amt)<0?"dn":"up"):""}">${fm(sum(L,x=>x.amt))}</b></div>`+L.map(x=>`<div class="cell"><div class="l"><div><span class="sb">${esc(x.t)}</span>${x.rec?`<span class="tag ${x.amt<0?"neg":"ok"}">${TYPE_TAG[x.type]||esc(x.type)}</span>`:`<span class="tag">Estimate</span>`}</div><div class="t3">${D(x.date)} · ${esc(x.a||"—")}</div></div><div class="r"><div class="${x.rec?(x.amt<0?"dn sb":"up sb"):""}">${x.rec?fm(x.amt):"≈ "+fm(x.est)}</div>${x.rec?`<div class="t3">Your entry</div>`:`<div class="t3">${HIDE?"":fn(x.s)+" × "}${x.cur=="USD"?"US$":"$"}${x.rate}${x.wht?" · −15% US tax":""}</div>`}</div></div>`).join("")}).join("")}
   </div>
-  <div class="foot-note">${anyEst?`ESTIMATE rows: actual amounts will differ a little because of the exchange rate, foreign tax withheld, and dividend changes. Based on current dividend rates × your shares; dates are usual pay dates and may shift a few days. US$ converted at ${FX.toFixed(2)}. `:""}Green rows use the amounts you entered in the INCOME tab.</div>`;
+  <div class="foot-note">${anyEst?`ESTIMATE rows: actual amounts will differ a little because of the exchange rate, foreign tax withheld, and dividend changes. Based on current dividend rates × your shares; dates are usual pay dates and may shift a few days. US$ converted at ${FX.toFixed(2)}. `:""}Green rows use the amounts you entered in the INCOME tab (dividends, interest and capital gains).</div>`;
 }
 
 function renderIncome(){
